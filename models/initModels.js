@@ -3,7 +3,7 @@ const { Meal } = require('../models/meal.model');
 const { Restaurant } = require('../models/restaurant.model');
 const { Reviwes } = require('../models/reviwes.modal');
 const { User } = require('../models/user.model');
-const { Orders } = require('./order.model');
+const { Orders } = require('../models/order.model');
 
 // Establish your models relations inside this function
 const initModels = () => {

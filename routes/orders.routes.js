@@ -2,7 +2,8 @@ const express = require('express');
 
 //Middlewares
 const { protectToken } = require('../middlewares/users.middlewares');
-const { orderExists } = require('../middlewares/orders.middlewares');
+
+
 //Controller
 const {
     getAllOrders,
@@ -10,6 +11,7 @@ const {
     updateOrders,
     deletOrders,
 } = require('../controllers/order.controller');
+
 
 
 const router = express.Router();

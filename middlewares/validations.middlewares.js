@@ -16,6 +16,7 @@ const createUserValidations = [
     .withMessage('Password cannot be empty')
     .isLength({ min: 8 })
     .withMessage('Password must be at least 8 characters long'),
+
 ];
 
 const checkValidations = (req, res, next) => {
@@ -33,13 +34,31 @@ const checkValidations = (req, res, next) => {
   next();
 };
 
-const reviwesValidation = (req,res,next) =>{
-  body('comment').notEmpty().withMessage('Comment cannot in empty')
-  next();
-}
+const restaurantValidation = [
+
+  body('name').notEmpty().withMessage('Name cannot be empty'),
+  body('address').notEmpty().withMessage(' address cannot be empty'),
+  body('rating').notEmpty().withMessage(' Rating cannot be empty'),
+  body('status').notEmpty().withMessage(' Status cannot be empty'),
+  
+];
+
+const reviwesValidation = [
+  body('comment').notEmpty().withMessage('Comment cannot in empty'),
+  body('rating').notEmpty().withMessage(' Rating cannot be empty'),
+];
+
+const mealsValidation = [
+
+  body('name').notEmpty().withMessage('Name cannot be empty'),
+  body('price').notEmpty().withMessage('price cannot be empty')
+    .isNumeric().withMessage('price cannot be empty'),
+];
 
 module.exports = {
   createUserValidations,
   checkValidations,
   reviwesValidation,
+  mealsValidation,
+  restaurantValidation,
 };

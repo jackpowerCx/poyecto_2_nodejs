@@ -11,7 +11,6 @@ const reviwesExists = catchAsync(async (req, res, next) => {
     const { id } = req.params;
 
     const review = await Reviwes.findOne({
-
         where: { id },
     });
 

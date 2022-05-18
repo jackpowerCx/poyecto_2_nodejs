@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 // Models
 const { User } = require('../models/user.model');
 const { Reviwes } = require('../models/reviwes.modal');
-const { Ordes } = require('../models/order.model');
+const { Orders } = require('../models/order.model');
 // Utils
 const { catchAsync } = require('../utils/catchAsync');
 const { AppError } = require('../utils/appError');
@@ -20,7 +20,7 @@ const getAllUsers = catchAsync(async (req, res, next) => {
     attributes: { exclude: ['password'] },
     include: [
       { model: Reviwes },
-      { model: Ordes },
+     { model: Orders },
     ],
 
   });
@@ -28,6 +28,9 @@ const getAllUsers = catchAsync(async (req, res, next) => {
   res.status(200).json({
     users,
   });
+
+  req.users = users;
+  next();
 });
 
 const createUser = catchAsync(async (req, res, next) => {

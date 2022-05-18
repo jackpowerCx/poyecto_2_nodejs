@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 
 // Models
 const { User } = require('../models/user.model');
+const { Reviwes } = require('../models/reviwes.modal');
+const { Orders } = require('../models/order.model');
 
 // Utils
 const { catchAsync } = require('../utils/catchAsync');
@@ -24,7 +26,16 @@ const protectToken = catchAsync(async (req, res, next) => {
   //validate token
   const decoded = await jwt.verify(token, process.env.JWT_SECRET);
   //{id:1, iat: 123213xx, exp:123456xxx }
-  const user = await User.findOne({ where: { id: decoded.id, status: 'active' } });
+  const user = await User.findOne({ 
+    where: { 
+      id: decoded.id, 
+      status: 'active' 
+    },
+    include: [
+      { model: Reviwes },
+     { model: Orders },
+    ],
+    });
 
   if (!user) {
     return next(new AppError('The owner of this token is no longer available', 403))
@@ -36,6 +47,7 @@ const protectToken = catchAsync(async (req, res, next) => {
 });
 
 const protectAdmin = catchAsync(async (req, res, next) => {
+  
   if (req.sessionUser.role !== 'admin') {
     return next(new AppError('Access not granted', 403));
   }

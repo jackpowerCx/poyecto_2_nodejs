@@ -1,5 +1,7 @@
 const express = require('express');
 
+//models
+const { getordersById } = require('../controllers/order.controller');
 // Middlewares
 const {
   userExists,
@@ -12,17 +14,20 @@ const {
   checkValidations,
 } = require('../middlewares/validations.middlewares');
 
+const {
+  orderExists
+} = require('../middlewares/orders.middlewares');
 // Controller
 const {
   getAllUsers,
   createUser,
-  getUserById,
   updateUser,
   deleteUser,
   login,
   checkToken,
 } = require('../controllers/users.controller');
 
+const { getAllOrders } = require('../controllers/order.controller');
 const router = express.Router();
 
 router.get('/', getAllUsers);
@@ -34,8 +39,10 @@ router.post('/login', login);
 // Apply protectToken middleware
 router.use(protectToken);
 
-
 router.get('/check-token', checkToken);
+
+router.get('/orders', getAllOrders);
+router.get('/orders/:id', orderExists, getordersById);
 
 router
   .route('/:id')

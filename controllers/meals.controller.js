@@ -44,6 +44,7 @@ const getAllMeals = catchAsync(async (req, res, next) => {
     });
 
     res.status(201).json({ meals });
+
 });
 
 const getMealById = catchAsync(async (req, res, next) => {

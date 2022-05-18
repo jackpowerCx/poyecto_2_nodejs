@@ -2,8 +2,8 @@ const express = require('express');
 
 // Middlewares
 const { restaurantExists } = require('../middlewares/restaurants.middlewares');
-const { reviwesExists } = require('../middlewares/reviwes.middlewares');
-const { protectToken } = require('../middlewares/users.middlewares');
+const { reviwesExists, restaurantsValidation } = require('../middlewares/reviwes.middlewares');
+const { protectToken, protectAdmin } = require('../middlewares/users.middlewares');
 
 //controller
 const {
@@ -19,6 +19,7 @@ const {
     updateReviwes,
     deleteReviwes
 } = require('../controllers/reviwes.controller');
+const { checkValidations, restaurantValidation, reviwesValidation} = require('../middlewares/validations.middlewares');
 
 const router = express.Router();
 
@@ -29,17 +30,22 @@ router.use(protectToken);
 
 router
     .route('/')
-    .post(createRestaurants);
+    .post(restaurantValidation, checkValidations, createRestaurants);
 
 
 router
     .route('/:id')
-    .patch(restaurantExists, updateRestaurant)
-    .delete(restaurantExists, deleteRestaurant);
+    .patch(restaurantExists, restaurantValidation, checkValidations, updateRestaurant)
+    .delete(restaurantExists, restaurantValidation, checkValidations, deleteRestaurant);
 router
     .route('/reviews/:id')
-    .post(restaurantExists, createReviwes)
-    .patch(restaurantExists,reviwesExists, updateReviwes)
-    .delete(restaurantExists, reviwesExists, deleteReviwes);
+    .post(restaurantExists,reviwesValidation, checkValidations, createReviwes);
+
+router.use(protectAdmin);
+
+router
+    .route('/reviews/:id')
+    .patch(restaurantExists, reviwesExists, reviwesValidation, checkValidations, updateReviwes)
+    .delete(restaurantExists, reviwesExists, reviwesValidation, checkValidations, deleteReviwes);
 
 module.exports = { restaurantsRouter: router };

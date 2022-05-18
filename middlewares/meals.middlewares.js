@@ -7,6 +7,7 @@ const { AppError } = require('../utils/appError');
 
 
 const mealExists = catchAsync(async(req,res,next)=> {
+    
     const { id } = req.params;
     
     const meal = await Meal.findOne({

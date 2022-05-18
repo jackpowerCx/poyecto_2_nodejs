@@ -4,7 +4,7 @@ const express = require('express');
 const { mealExists } = require('../middlewares/meals.middlewares');
 const { restaurantExists } = require('../middlewares/restaurants.middlewares');
 const { protectToken, protectAdmin } = require('../middlewares/users.middlewares');
-
+const { checkValidations, mealsValidation } = require('../middlewares/validations.middlewares');
 // Controller
 const {
 
@@ -23,9 +23,11 @@ router.use(protectToken);
 router.get('/', getAllMeals);
 
 
-router.post('/:id', restaurantExists, createMeals);
+router.post('/:id', mealsValidation, checkValidations, restaurantExists, createMeals);
 router.get('/:id', mealExists, getMealById);
-router.patch('/:id',protectAdmin, mealExists, updateMeal);
-router.delete('/:id',protectAdmin, mealExists, deleteMeal);
+
+router.use(protectAdmin);
+router.patch('/:id',  mealExists, updateMeal);
+router.delete('/:id',  mealExists, deleteMeal);
 
 module.exports = { mealsRouter: router };
