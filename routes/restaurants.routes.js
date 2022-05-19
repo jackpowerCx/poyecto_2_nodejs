@@ -35,14 +35,14 @@ router
 
 router
     .route('/:id')
-    .patch(restaurantExists, restaurantValidation, checkValidations, updateRestaurant)
-    .delete(restaurantExists, restaurantValidation, checkValidations, deleteRestaurant);
+    .patch(restaurantExists, updateRestaurant)
+    .delete(restaurantExists, deleteRestaurant);
 router
     .route('/reviews/:id')
     .post(restaurantExists,reviwesValidation, checkValidations, createReviwes);
 
+    
 router.use(protectAdmin);
-
 router
     .route('/reviews/:id')
     .patch(restaurantExists, reviwesExists, reviwesValidation, checkValidations, updateReviwes)

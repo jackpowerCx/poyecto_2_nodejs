@@ -19,12 +19,13 @@ const {
 
 const router = express.Router();
 
-router.use(protectToken);
 router.get('/', getAllMeals);
+router.get('/:id', mealExists, getMealById);
+
+router.use(protectToken);
 
 
 router.post('/:id', mealsValidation, checkValidations, restaurantExists, createMeals);
-router.get('/:id', mealExists, getMealById);
 
 router.use(protectAdmin);
 router.patch('/:id',  mealExists, updateMeal);

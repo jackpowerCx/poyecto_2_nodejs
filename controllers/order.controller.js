@@ -5,8 +5,10 @@ const { Orders } = require('../models/order.model');
 const { Meal } = require('../models/meal.model');
 const { User } = require('../models/user.model');
 const { Restaurant } = require('../models/restaurant.model');
+
 //utlis
 const { catchAsync } = require('../utils/catchAsync');
+const { AppError } = require('../utils/appError');
 
 dotenv.config({ path: './config.env' });
 
@@ -28,11 +30,16 @@ const getAllOrders = catchAsync(async (req, res, next) => {
 const createOrders = catchAsync(async (req, res, next) => {
 
     const { sessionUser } = req;
+
+
     const { quantity, mealId } = req.body;
 
     const orderPrice = await Meal.findOne({
         where: { id: mealId },
     });
+    if (!orderPrice) {
+        return next(new AppError('order does not exist with given Id', 404));
+    }
 
     const newOrder = await Orders.create({
         quantity,

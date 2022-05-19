@@ -37,7 +37,7 @@ const checkValidations = (req, res, next) => {
 const restaurantValidation = [
 
   body('name').notEmpty().withMessage('Name cannot be empty'),
-  body('address').notEmpty().withMessage(' address cannot be empty'),
+  body('anddress').notEmpty().withMessage(' address cannot be empty'),
   body('rating').notEmpty().withMessage(' Rating cannot be empty'),
   body('status').notEmpty().withMessage(' Status cannot be empty'),
   
