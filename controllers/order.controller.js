@@ -38,7 +38,7 @@ const createOrders = catchAsync(async (req, res, next) => {
         where: { id: mealId },
     });
     if (!orderPrice) {
-        return next(new AppError('order does not exist with given Id', 404));
+        return next(new AppError('order does not exist with given mealId', 404));
     }
 
     const newOrder = await Orders.create({
