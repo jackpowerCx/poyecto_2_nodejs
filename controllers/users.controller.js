@@ -8,6 +8,9 @@ const dotenv = require('dotenv');
 const { User } = require('../models/user.model');
 const { Reviwes } = require('../models/reviwes.modal');
 const { Orders } = require('../models/order.model');
+const { Meal } = require('../models/meal.model');
+const { Restaurant } = require('../models/restaurant.model');
+
 // Utils
 const { catchAsync } = require('../utils/catchAsync');
 const { AppError } = require('../utils/appError');
@@ -20,7 +23,7 @@ const getAllUsers = catchAsync(async (req, res, next) => {
     attributes: { exclude: ['password'] },
     include: [
       { model: Reviwes },
-     { model: Orders },
+      { model: Orders },
     ],
 
   });
@@ -31,6 +34,24 @@ const getAllUsers = catchAsync(async (req, res, next) => {
 
   req.users = users;
   next();
+});
+
+const getAllordersUser = catchAsync(async (req, res, next) => {
+
+  const { sessionUser } = req;
+  const orders = await Orders.findAll({
+
+    where: { userId: sessionUser.id },
+    include: [
+      {
+        model: Meal,
+        include: [{ model: Restaurant }],
+      }
+
+    ]
+  })
+  res.status(201).json({ orders });
+
 });
 
 const createUser = catchAsync(async (req, res, next) => {
@@ -55,7 +76,7 @@ const createUser = catchAsync(async (req, res, next) => {
 
 const getUserById = catchAsync(async (req, res, next) => {
   const { user } = req;
-
+  
   res.status(200).json({
     user,
   });
@@ -108,6 +129,7 @@ const checkToken = catchAsync(async (req, res, next) => {
 
 module.exports = {
   getAllUsers,
+  getAllordersUser,
   createUser,
   getUserById,
   updateUser,

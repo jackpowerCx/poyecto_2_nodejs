@@ -17,8 +17,8 @@ const getAllOrders = catchAsync(async (req, res, next) => {
             [
                 {
                     model: Meal,
-                    where: { status: 'active' },
-                    include: { model: Restaurant, where: { status: 'active' } },
+                    //where: { status: 'active' },
+                    include: { model: Restaurant },
                 },
             ],
     });
@@ -31,27 +31,36 @@ const createOrders = catchAsync(async (req, res, next) => {
     const { quantity, mealId } = req.body;
 
     const orderPrice = await Meal.findOne({
-        where: { price }
+        where: { id: mealId },
     });
-    console.log(orderPrice)
 
     const newOrder = await Orders.create({
         quantity,
         mealId,
-        totalPrice: (quantity * orderPrice),
+        totalPrice: (quantity * orderPrice.price),
         userId: sessionUser.id,
     });
 
+
     res.status(201).json({ newOrder });
-    //res.status(201).json({  })
+
 });
 
 const updateOrders = catchAsync(async (req, res, next) => {
-    res.status(201).json({});
+    const { order } = req;
+
+    await order.update({ status: 'completed' });
+
+    res.status(201).json({ order, status: 'success' });
 });
 
 const deletOrders = catchAsync(async (req, res, next) => {
-    res.status(201).json({});
+
+    const { order } = req;
+
+    await order.update({ status: 'cancelled' });
+
+    res.status(201).json({ order, status: 'success' });
 });
 
 const getordersById = catchAsync(async (req, res, next) => {
@@ -59,6 +68,7 @@ const getordersById = catchAsync(async (req, res, next) => {
 
     res.status(201).json({ order });
 });
+
 module.exports = {
     getAllOrders,
     createOrders,

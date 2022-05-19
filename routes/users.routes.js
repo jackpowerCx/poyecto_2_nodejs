@@ -20,6 +20,7 @@ const {
 // Controller
 const {
   getAllUsers,
+  getAllordersUser,
   createUser,
   updateUser,
   deleteUser,
@@ -41,7 +42,7 @@ router.use(protectToken);
 
 router.get('/check-token', checkToken);
 
-router.get('/orders', getAllOrders);
+router.get('/orders', getAllordersUser);
 router.get('/orders/:id', orderExists, getordersById);
 
 router

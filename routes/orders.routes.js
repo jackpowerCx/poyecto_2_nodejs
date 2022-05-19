@@ -2,6 +2,7 @@ const express = require('express');
 
 //Middlewares
 const { protectToken } = require('../middlewares/users.middlewares');
+const { orderExists } = require('../middlewares/orders.middlewares');
 
 
 //Controller
@@ -20,7 +21,7 @@ router.use(protectToken);
 
 router.get('/me', getAllOrders);
 router.post('/', createOrders);
-router.patch('/:id', updateOrders);
-router.delete('/:id', deletOrders);
+router.patch('/:id', orderExists, updateOrders);
+router.delete('/:id', orderExists, deletOrders);
 
 module.exports = { ordesRouter: router };

@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const req = require('express/lib/request');
 
 //Models
 const { Meal } = require('../models/meal.model');
@@ -51,6 +52,17 @@ const getMealById = catchAsync(async (req, res, next) => {
     const { meal } = req;
 
     res.status(201).json({ meal });
+});
+
+const getPriceMeal = catchAsync(async(re,res,next)=>{
+
+    const orderPrice = await Meal.findOne({
+        where: { price },
+    });
+
+    
+    req.orderPrice = orderPrice.price; 
+    next();
 });
 
 const deleteMeal = catchAsync(async (req, res, next) => {
